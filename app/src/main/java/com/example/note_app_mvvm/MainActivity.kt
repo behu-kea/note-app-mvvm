@@ -1,7 +1,6 @@
 package com.example.note_app_mvvm
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -13,63 +12,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.note_app_mvvm.ui.components.AddTodo
+import com.example.note_app_mvvm.ui.components.Stats
+import com.example.note_app_mvvm.ui.components.Title
+import com.example.note_app_mvvm.ui.components.TodoItem
+import com.example.note_app_mvvm.ui.repository.models.TodoItem
 import com.example.note_app_mvvm.ui.theme.NoteappmvvmTheme
-import kotlin.math.log
+import com.example.note_app_mvvm.ui.view_models.TodoViewModel
 
-data class TodoItem(
-    val title: String,
-    val description: String,
-    var isChecked: Boolean = false
-)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val viewModel = viewModel<TodoViewModel>()
+
             NoteappmvvmTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var titleText by remember { mutableStateOf("") }
-                    var descriptionText by remember { mutableStateOf("") }
-                    var todos by remember { mutableStateOf(mutableStateListOf<TodoItem>()) }
-
                     Column(modifier = Modifier.padding(12.dp)) {
-                        Text(text = "Todo app", fontSize = 32.sp)
+                        Title()
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Title input
-                        TextField(
-                            value = titleText,
-                            label = { Text("Title") },
-                            modifier = Modifier.fillMaxWidth(),
-                            onValueChange = { titleText = it }
+                        AddTodo(
+                            viewModel.titleText,
+                            viewModel.descriptionText,
+                            viewModel::onTitleChange,
+                            viewModel::onDescriptionChange,
+                            viewModel::onAddNewTodo
                         )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Description input
-                        TextField(
-                            value = descriptionText,
-                            label = { Text("Description") },
-                            modifier = Modifier.fillMaxWidth(),
-                            onValueChange = { descriptionText = it }
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Add Todo Button
-                        Button(onClick = {
-                            if (titleText.isNotBlank()) {
-                                todos.add(TodoItem(titleText, descriptionText))
-                                titleText = ""
-                                descriptionText = ""
-                            }
-                        }) {
-                            Text("Add todo")
-                        }
 
                         Spacer(modifier = Modifier.height(24.dp))
 
@@ -77,8 +52,7 @@ class MainActivity : ComponentActivity() {
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        // Display todo statistics
-                        Text("Number of todos: ${todos.size}")
+                        Stats(viewModel.todos)
 
                         Spacer(modifier = Modifier.height(24.dp))
 
@@ -92,31 +66,15 @@ class MainActivity : ComponentActivity() {
 
                         // Todo list
                         LazyColumn {
-                            items(todos) { todo ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Checkbox(
-                                        checked = todo.isChecked,
-                                        onCheckedChange = { checked ->
-                                            Log.d("asd", checked.toString())
-                                            val todoItemIndex = todos.indexOf(todo)
-                                            if (todoItemIndex != -1) {
-                                                todos[todoItemIndex] = todo.copy(isChecked = checked) // Trigger recomposition
-                                            }
-                                        }
-                                    )
-
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(todo.title, fontWeight = FontWeight.Bold)
-                                        if (todo.description.isNotBlank()) {
-                                            Text(todo.description, fontSize = 14.sp)
-                                        }
-                                    }
-                                }
+                            items(viewModel.todos) { todo ->
+                                TodoItem(
+                                    todo,
+                                    onCheckedChanged = { isChecked ->
+                                        viewModel.onCheckedChange(isChecked, todo)
+                                    },
+                                    onDelete = {
+                                        viewModel.onDelete(todo)
+                                    })
                             }
                         }
                     }

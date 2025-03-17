@@ -1,4 +1,4 @@
-package com.example.note_app_mvvm.ui.repository.models
+package com.example.note_app_mvvm.repository.models
 
 data class TodoItem(
     val title: String,

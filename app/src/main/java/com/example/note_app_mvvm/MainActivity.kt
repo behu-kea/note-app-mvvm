@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -17,7 +16,6 @@ import com.example.note_app_mvvm.ui.components.AddTodo
 import com.example.note_app_mvvm.ui.components.Stats
 import com.example.note_app_mvvm.ui.components.Title
 import com.example.note_app_mvvm.ui.components.TodoItem
-import com.example.note_app_mvvm.ui.repository.models.TodoItem
 import com.example.note_app_mvvm.ui.theme.NoteappmvvmTheme
 import com.example.note_app_mvvm.ui.view_models.TodoViewModel
 

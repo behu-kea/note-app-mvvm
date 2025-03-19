@@ -17,7 +17,11 @@ import com.example.note_app_mvvm.repository.models.TodoItem
 
 
 @Composable
-fun TodoItem(todo: TodoItem, onCheckedChanged: (Boolean) -> Unit, onDelete: () -> Unit) {
+fun TodoItem(
+    todo: TodoItem,
+    onCheckedChanged: (Boolean) -> Unit,
+    onDelete: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

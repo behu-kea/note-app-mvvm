@@ -16,7 +16,12 @@ class TodoViewModel: ViewModel() {
 
     fun onCheckedChange(isChecked: Boolean, todo: TodoItem) {
         val todoItemIndex = todos.indexOf(todo)
+        Log.d("hej", "in here: " + isChecked.toString())
         if (todoItemIndex != -1) {
+            val foundTodoItem = todos[todoItemIndex]
+//            Log.d("hej", foundTodoItem.toString())
+               foundTodoItem.isChecked = isChecked
+//            Log.d("hej", foundTodoItem.toString())
             todos[todoItemIndex] = todo.copy(isChecked = isChecked) // Trigger recomposition
         }
     }

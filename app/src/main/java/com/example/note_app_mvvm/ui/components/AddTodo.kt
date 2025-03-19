@@ -18,7 +18,6 @@ fun AddTodo(
     onDescriptionChange: (String) -> Unit,
     onAddNewTodo: () -> Unit
 ) {
-    // Title input
     TextField(
         value = titleText,
         label = { Text("Title") },
@@ -28,7 +27,6 @@ fun AddTodo(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    // Description input
     TextField(
         value = descriptionText,
         label = { Text("Description") },
@@ -38,7 +36,6 @@ fun AddTodo(
 
     Spacer(modifier = Modifier.height(16.dp))
 
-    // Add Todo Button
     Button(onClick = onAddNewTodo) {
         Text("Add todo")
     }

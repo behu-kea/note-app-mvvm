@@ -10,12 +10,11 @@ import com.example.note_app_mvvm.repository.models.TodoItem
 
 
 class TodoViewModel: ViewModel() {
-    var titleText by  mutableStateOf("")
+    var titleText by mutableStateOf("")
     var descriptionText by mutableStateOf("")
-    var todos =mutableStateListOf<TodoItem>()
+    var todos = mutableStateListOf<TodoItem>()
 
     fun onCheckedChange(isChecked: Boolean, todo: TodoItem) {
-        Log.d("asd", isChecked.toString())
         val todoItemIndex = todos.indexOf(todo)
         if (todoItemIndex != -1) {
             todos[todoItemIndex] = todo.copy(isChecked = isChecked) // Trigger recomposition

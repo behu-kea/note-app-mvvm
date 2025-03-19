@@ -6,6 +6,8 @@ import com.example.note_app_mvvm.repository.models.TodoItem
 
 @Composable
 fun Stats(todos: MutableList<TodoItem>) {
+    val numberOfTodoItemsLeft = todos.filter{!it.isChecked}.size
+
     Text("Number of todos: ${todos.size}")
-    Text("Todos left: ${todos.filter{!it.isChecked}.size}")
+    Text("Todos left: $numberOfTodoItemsLeft")
 }
